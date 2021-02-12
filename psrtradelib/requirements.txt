@@ -1,0 +1,10 @@
+wheel
+setuptools
+twine
+pytest
+pytest-runner
+matplotlib==3.2.2
+backtrader==1.9.76.123
+get_all_tickers
+tda-api
+webdriver-manager
