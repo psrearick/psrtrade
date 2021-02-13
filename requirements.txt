@@ -1,5 +1,5 @@
 wheel
-setuptools
+setuptools~=41.2.0
 twine
 pytest
 pytest-runner
@@ -10,3 +10,7 @@ tda-api==1.1.4
 webdriver-manager
 beautifulsoup4
 git+https://github.com/mariostoev/finviz
+selenium
+httpx~=0.16.1
+pandas~=1.2.2
+numpy~=1.20.1
