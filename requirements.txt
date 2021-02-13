@@ -6,7 +6,5 @@ pytest-runner
 matplotlib==3.2.2
 backtrader==1.9.76.123
 get_all_tickers
-tda-api==1.1.4
+tda-api
 webdriver-manager
-beautifulsoup4
-git+https://github.com/mariostoev/finviz
