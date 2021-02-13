@@ -1,7 +1,6 @@
 # Configs / Auth
 psrtradelib/config.py
 token.pickle
-help.md
 
 # Environment
 .venv
@@ -22,3 +21,7 @@ lib/
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
+
+# Other
+*.DS_Store
+help.md
