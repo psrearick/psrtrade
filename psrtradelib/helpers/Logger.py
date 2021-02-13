@@ -3,10 +3,10 @@ class Logger():
         print(text)
     
     def Warning(self, text):
-        print(bcolors.WARNING + text + bcolors.ENDC)
+        print(bcolors.WARNING + str(text) + bcolors.ENDC)
 
     def Error(self, text):
-        print(bcolors.FAIL + text + bcolors.FAIL)
+        print(bcolors.FAIL + str(text) + bcolors.FAIL)
 
 class bcolors:
     HEADER = '\033[95m'
