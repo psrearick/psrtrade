@@ -1,3 +1,4 @@
 venv/
 psrtradelib/config.py
 psrtradelib/__pycache__
+token.pickle
