@@ -1,8 +1,11 @@
 from finviz.screener import Screener
+import helpers.Logger as Logger
 
 class Sample():
+    def __init__(self):
+        self.logger = Logger.Logger()
 
-    def get_stock_list():
+    def get_universe(self):
         # Asset Type: EQUITY
         # Market Cap: Over 2 Billion
         # Country: USA
@@ -17,7 +20,14 @@ class Sample():
             'ta_beta_o1'
         ]
         
-        stock_list = Screener(filters=filters, table='Performance', order='price')
+        return Screener(filters=filters, table='Performance', order='price')
+    
+    def get_tickers(self):
+        stock_list = self.get_universe()
+        tickers = []
 
-        for stock in stock_list:  # Loop through 10th - 20th stocks
-            print(stock['Ticker'], stock['Price']) # Print symbol and price
+        for stock in stock_list:
+            tickers.append(stock['Ticker'])
+        
+        return tickers
+            

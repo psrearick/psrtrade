@@ -1,18 +1,14 @@
 import math
 import backtrader as bt
-import helpers.Logger
 
 class FastCross(bt.Strategy):
 
     params = (
         ('fast', 5),
         ('slow', 20),
-        ("order_percentage", 0.95),
-        ("ticker", "SPY")
     )
 
     def __init__(self):
-        self.logger = helpers.Logger.Logger()
         self.indicators = dict()
         for i, d in enumerate(self.datas):
             if (i + 1) == len(self.datas): continue
@@ -35,9 +31,6 @@ class FastCross(bt.Strategy):
             pos = self.getposition(d).size
             if not pos:
                 if inds['crossover'] > 0:
-                    # amount_to_invest = (self.p.order_percentage * self.broker.cash)
-                    # self.size = math.floor(amount_to_invest / self.data.close)
-                    # self.buy(data=d, size=self.size)
                     self.buy(data=d, size=10)
             if pos > 0:
                 if inds['crossover'] < 0:
