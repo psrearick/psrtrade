@@ -1,2 +1,3 @@
 venv/
 psrtradelib/config.py
+psrtradelib/__pycache__
