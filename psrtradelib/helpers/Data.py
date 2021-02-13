@@ -12,6 +12,7 @@ import re
 import pickle as pkl
 import atexit
 import helpers.Logger as Logger
+import backtrader as bt
 
 class SecuritiesData(object):
     def __init__(
@@ -102,6 +103,23 @@ class SecuritiesData(object):
             end += 500
             time.sleep(1)
 
+    def get_cerebro_data(self, symbol=None):
+        if symbol is not None:
+            self.symbol = symbol
+        dataframe = self.get_data_df()
+        return BacktraderData(dataname=dataframe)
 
 
-    # https://github.com/mariostoev/finviz
+
+class BacktraderData(bt.feeds.PandasData):
+    params = (
+        ('nullvalue', float('NaN')),
+        ('datetime', 5),
+        ('time', -1),
+        ('open', 0),
+        ('high', 1),
+        ('low', 2),
+        ('close', 3),
+        ('volume', 4),
+        ('openinterest', -1),
+    )

@@ -2,6 +2,8 @@ import os, sys, argparse
 import strategies.GoldenCross as GoldenCross
 import strategies.BuyHold as BuyHold
 import strategies.ForceIndexImpulse.main as ForceIndexImpulse
+import strategies.FastCross as FastCross
+import strategies.MediumCross as MediumCross
 import helpers.Data
 import helpers.Logger
 import helpers.BacktraderUniverse as bt
@@ -14,6 +16,8 @@ class Backtest():
     def test(self):
         # Dictionary of strategies
         strategies = {
+            "fastcross": FastCross.FastCross,
+            "mediumcross": MediumCross.MediumCross,
             "goldencross": GoldenCross.GoldenCross,
             "buyhold": BuyHold.BuyHold,
             "forceindex": ForceIndexImpulse.ForceIndexImpulse
@@ -30,29 +34,30 @@ class Backtest():
 
         cerebro = bt.Cerebro()
 
-        cerebro.broker.set_cash(100000)
+        cerebro.broker.set_cash(1000000)
 
         # Get data
+        assets_list = [
+            "AAPL",
+            "AMZN",
+            "GOOG",
+            "FB",
+            "SPY",
+            "DIA"
+        ]
+
         sd = self.dataModel()
-        data = bt.feeds.PandasData(
-            dataname=sd.get_data_df(),
-            datetime = 5,
-            open = 0,
-            high = 1,
-            low = 2,
-            close = 3,
-            volume = 4
-            )
+        for i in range(len(assets_list)):
+            symbol = assets_list[i]
+            data = sd.get_cerebro_data(symbol)
+            cerebro.adddata(data, name=symbol)
+            cerebro.resampledata(data, timeframe=bt.TimeFrame.Weeks, name=symbol+"_long")
 
-        # Add daily and weekly data
-        cerebro.adddata(data)
-        cerebro.resampledata(data, timeframe=bt.TimeFrame.Weeks)
-
+        # Add Strategy and Analyzers
         cerebro.addstrategy(strategies[strategy])
-
         cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='mysharpe')
         cerebro.addanalyzer(bt.analyzers.SQN, _name="sqn")
-        # cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name="ta")
+        cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name="ta")
 
         # cerebro.addsizer(bt.sizers.FixedSize, stake=100)
 
@@ -64,10 +69,13 @@ class Backtest():
 
         self.logger.Warning("Ending portfolio value - %.2f" % cerebro.broker.getvalue())
 
+        trade_count = analyzers.ta.get_analysis()['total']['closed']
+        win_count = analyzers.ta.get_analysis()['won']['total']
+        win_percent = round(win_count/trade_count, 2)
+
         self.logger.Log("Sharpe Ratio - Score: {}".format(analyzers.mysharpe.get_analysis()['sharperatio']))
         self.logger.Log("SQN - Trades: {}, Score: {}".format(analyzers.sqn.get_analysis()['trades'], analyzers.sqn.get_analysis()['sqn']))
-        # print("Total Trades: {}".format(thestrat.analyzers.ta.get_analysis()['total']['closed']))
-        # print("Total Wins: {}".format(thestrat.analyzers.ta.get_analysis()['won']['total']))
-        # print("Total Losses: {}".format(thestrat.analyzers.ta.get_analysis()['lost']['total']))
+        self.logger.Log("Total Trades: {}".format(trade_count))
+        self.logger.Log("Win Percentage: {}".format(str(win_percent * 100) + "%"))
 
         # cerebro.plot()
