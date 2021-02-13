@@ -17,6 +17,7 @@ build/
 dist/
 lib/
 .installed.cfg
+psrtradelib/data/
 
 # Installer logs
 pip-log.txt
@@ -25,3 +26,4 @@ pip-delete-this-directory.txt
 # Other
 *.DS_Store
 help.md
+.idea/
