@@ -1,4 +1,24 @@
-venv/
+# Configs / Auth
 psrtradelib/config.py
-psrtradelib/__pycache__
 token.pickle
+help.md
+
+# Environment
+.venv
+venv/
+
+# Distribution / packaging
+*/__pycache__/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg
+*.egg-info/
+build/
+dist/
+lib/
+.installed.cfg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt

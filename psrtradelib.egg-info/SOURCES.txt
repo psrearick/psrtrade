@@ -1,8 +1,0 @@
-README.md
-setup.py
-psrtradelib/__init__.py
-psrtradelib/__main__.py
-psrtradelib.egg-info/PKG-INFO
-psrtradelib.egg-info/SOURCES.txt
-psrtradelib.egg-info/dependency_links.txt
-psrtradelib.egg-info/top_level.txt
