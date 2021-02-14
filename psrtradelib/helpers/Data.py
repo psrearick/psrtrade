@@ -28,5 +28,5 @@ class SecuritiesData(object):
     def get_cerebro_data(self, symbol):
         return self.provider.get_cerebro_data(symbol)
 
-    def get_cerebro_data_from_csv(self, symbol):
-        return self.provider.get_cerebro_data_from_csv(symbol)
+    def get_cerebro_data_from_csv(self, symbol, adjusted=False):
+        return self.provider.get_cerebro_data_from_csv(symbol, adjusted)

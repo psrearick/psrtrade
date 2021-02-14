@@ -39,14 +39,14 @@ class Backtest:
 
         cerebro = bt.Cerebro()
 
-        cerebro.broker.set_cash(100000)
+        cerebro.broker.set_cash(1000000)
 
         # Get data
         assets_list = [
             "AAPL",
             "AMZN",
-            # "GOOG",
-            # "FB",
+            "GOOG",
+            "FB",
             # "SPY",
             # "DIA"
         ]
@@ -68,7 +68,7 @@ class Backtest:
         cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='mysharpe')
         cerebro.addanalyzer(bt.analyzers.SQN, _name="sqn")
         cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name="ta")
-        cerebro.addsizer(bt.sizers.SizerFix, stake=20)
+        cerebro.addsizer(bt.sizers.SizerFix, stake=1)
 
         # Run Cerebro
         self.logger.Warning("Starting portfolio value - %.2f" % cerebro.broker.getvalue())

@@ -1,11 +1,14 @@
-import helpers.Logger
+import helpers.Logger as Logger
 import Backtest
+from Backtest6040Benchmark import Backtest6040Benchmark as Benchmark
+
 
 def main():
-    logger = helpers.Logger.Logger()
-    backtest = Backtest.Backtest()
+    logger = Logger.Logger()
     logger.Warning("Starting PSRTrade")
-    backtest.test()
+    # backtest = Backtest.Backtest()
+    # backtest.test()
+    Benchmark().test()
 
 
 if __name__ == '__main__':

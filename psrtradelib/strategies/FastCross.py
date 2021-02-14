@@ -55,12 +55,15 @@ class FastCross(bt.Strategy):
         self.next()
 
     def next(self):
+        pass
         for i, d in enumerate(self.datas):
             if d not in self.indicators.keys():
                 continue
             inds = self.indicators[d]
             dt, dn = self.datetime.date(), d._name
             pos = self.getposition(d).size
+            if len(inds['crossover']) < 1:
+                continue
             if pos == 0:
                 if inds['crossover'][0] > 0:
                     o = self.buy(data=d, exectype=bt.Order.Market)
