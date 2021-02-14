@@ -10,6 +10,9 @@ class SecuritiesData(object):
     def get_client(self):
         return self.provider.get_client()
 
+    def get_data_df_from_csv(self, symbol):
+        return self.provider.get_data_df_from_csv(symbol)
+
     # Using client, get data for specified symbol using clients default return format
     def get_data(self, symbol):
         return self.provider.get_data(symbol)
@@ -24,3 +27,6 @@ class SecuritiesData(object):
 
     def get_cerebro_data(self, symbol):
         return self.provider.get_cerebro_data(symbol)
+
+    def get_cerebro_data_from_csv(self, symbol):
+        return self.provider.get_cerebro_data_from_csv(symbol)

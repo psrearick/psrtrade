@@ -27,3 +27,5 @@ pip-delete-this-directory.txt
 *.DS_Store
 help.md
 .idea/
+.idea
+data/

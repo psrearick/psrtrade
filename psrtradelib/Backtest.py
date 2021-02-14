@@ -44,7 +44,7 @@ class Backtest:
         # Get data
         assets_list = [
             "AAPL",
-            # "AMZN",
+            "AMZN",
             # "GOOG",
             # "FB",
             # "SPY",
@@ -59,7 +59,7 @@ class Backtest:
         sd = self.dataModel
         for i in range(len(assets_list)):
             symbol = assets_list[i]
-            data = sd.get_cerebro_data(symbol)
+            data = sd.get_cerebro_data_from_csv(symbol)
             cerebro.adddata(data, name=symbol)
             cerebro.resampledata(data, timeframe=bt.TimeFrame.Weeks, name=symbol + "_long")
 
