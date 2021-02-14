@@ -14,7 +14,7 @@ class ProviderModel:
     def get_data_df_from_csv(self, symbol, adjusted=False):
         # define filename pattern and get path
         path = "psrtradelib/data"
-        suffix = "_adjusted" if adjusted else ""
+        suffix = "_adjusted" if adjusted is True else ""
         filename = glob.glob("{}/{}_*{}.csv".format(path, symbol, suffix))
 
         # If the file exists, get its date from its name
@@ -24,6 +24,7 @@ class ProviderModel:
             m = re.search("{}/{}_(.+?){}.csv".format(path, symbol, suffix), filename)
             if m:
                 date = m.group(1)
+                date = date.replace("_adjusted", "")
 
         # If a date is not found, return
         if date is None:
