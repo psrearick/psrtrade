@@ -2,7 +2,7 @@ import backtrader as bt
 import helpers.Logger as logger
 
 
-class FastCross(bt.Strategy):
+class MACross(bt.Strategy):
     params = (
         ('fast', 5),
         ('slow', 20),

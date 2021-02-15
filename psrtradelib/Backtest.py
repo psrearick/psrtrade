@@ -1,9 +1,7 @@
 import os, sys, argparse
-import strategies.GoldenCross as GoldenCross
 import strategies.BuyHold as BuyHold
 import strategies.ForceIndexImpulse.main as ForceIndexImpulse
-from strategies.FastCross import FastCross
-import strategies.MediumCross as MediumCross
+from strategies.MACross import MACross
 import helpers.Data as Data
 import helpers.Logger as Logger
 import helpers.BacktraderUniverse as bt
@@ -21,9 +19,9 @@ class Backtest:
     def test(self):
         # Dictionary of strategies
         strategies = {
-            "fastcross": FastCross,
-            "mediumcross": MediumCross.MediumCross,
-            "goldencross": GoldenCross.GoldenCross,
+            "fastcross": [MACross, {'fast': 5, 'slow': 20}],
+            "mediumcross": [MACross, {'fast': 20, 'slow': 50}],
+            "goldencross": [MACross, {'fast': 50, 'slow': 200}],
             "buyhold": BuyHold.BuyHold,
             "forceindex": ForceIndexImpulse.ForceIndexImpulse
         }
@@ -39,7 +37,7 @@ class Backtest:
 
         cerebro = bt.Cerebro()
 
-        cerebro.broker.set_cash(1000000)
+        cerebro.broker.set_cash(10000)
 
         # Get data
         assets_list = [
@@ -47,9 +45,14 @@ class Backtest:
             "AMZN",
             "GOOG",
             "FB",
-            # "SPY",
-            # "DIA"
+            "SPY",
+            "DIA"
         ]
+
+        # assets_list = [
+        #     "SPY",
+        #     "AGG"
+        # ]
 
         # sample = UptrendPullback.Sample()
         # get_universe = getattr(sample, "get_universe", None)
@@ -63,21 +66,24 @@ class Backtest:
             cerebro.adddata(data, name=symbol)
             cerebro.resampledata(data, timeframe=bt.TimeFrame.Weeks, name=symbol + "_long")
 
-        # # Add Strategy and Analyzers
-        cerebro.addstrategy(strategies[strategy])
+        # # Add Strategy, Sizer, and Analyzers
+        cerebro.addstrategy(strategies[strategy][0], **strategies[strategy][1])
         cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='mysharpe')
         cerebro.addanalyzer(bt.analyzers.SQN, _name="sqn")
         cerebro.addanalyzer(bt.analyzers.TradeAnalyzer, _name="ta")
-        cerebro.addsizer(bt.sizers.SizerFix, stake=1)
+        cerebro.addanalyzer(bt.analyzers.Returns, _name="returns")
+        # cerebro.addsizer(bt.sizers.SizerFix, stake=20)
 
         # Run Cerebro
-        self.logger.Warning("Starting portfolio value - %.2f" % cerebro.broker.getvalue())
+        self.logger.Log("Starting portfolio value - %.2f" % cerebro.broker.getvalue())
         results = cerebro.run()
         result = results[0]
         analyzers = result.analyzers
-        self.logger.Warning("Ending portfolio value - %.2f" % cerebro.broker.getvalue())
+        self.logger.Log("Ending portfolio value - %.2f" % cerebro.broker.getvalue())
 
         # Log Results
+        returns = analyzers.returns.get_analysis()
+        self.logger.Warning(returns['rnorm100'])
         ta = analyzers.ta.get_analysis()
         print(ta['total']['total'])
         trade_count = ta['total']['closed'] if ta['total']['total'] > 0 else 0
@@ -89,3 +95,5 @@ class Backtest:
                                                              analyzers.sqn.get_analysis()['sqn']))
         self.logger.Log("Total Trades: {}".format(trade_count))
         self.logger.Log("Win Percentage: {}".format(str(win_percent * 100) + "%"))
+
+        cerebro.plot()
